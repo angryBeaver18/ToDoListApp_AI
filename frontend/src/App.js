@@ -10,31 +10,6 @@ const ToDoApp = () => {
         fetchTasks();
     }, []);
 
-
-    const addTask = async () => {
-        if (!newTask.trim()) return;
-
-        try {
-            const response = await fetch('http://localhost:5000/api/tasks', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ task: newTask }),
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            setTasks([...tasks, data]);
-            setNewTask('');
-        } catch (error) {
-            console.error('Error adding task:', error);
-        }
-    };
-
     const fetchTasks = async () => {
         try {
             const response = await axios.get('http://localhost:5000/api/tasks');
@@ -44,20 +19,17 @@ const ToDoApp = () => {
         }
     };
 
-    // const addTask = async () => {
-    //     if (!newTask.trim()) return;
+    const addTask = async () => {
+        if (!newTask.trim()) return;
 
-    //     try {
-    //         const response = await axios.post('/api/tasks', { task: newTask });
-    //         // const response = await fetch('http://localhost:5000/api/tasks', {
-    //         //     method: "POST"
-    //         //   });
-    //         setTasks([...tasks, response.data]);
-    //         setNewTask('');
-    //     } catch (error) {
-    //         console.error('Error adding task:', error);
-    //     }
-    // };
+        try {
+            const response = await axios.post('http://localhost:5000/api/tasks', { task: newTask });
+            setTasks([...tasks, response.data]);
+            setNewTask('');
+        } catch (error) {
+            console.error('Error adding task:', error);
+        }
+    };
 
     const toggleTask = async (id) => {
         try {
